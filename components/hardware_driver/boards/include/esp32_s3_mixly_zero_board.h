@@ -23,32 +23,33 @@
 #include "esp_codec_dev_os.h"
 
 /**
- * @brief ESP32-S3-KORVO-2-V3.0 I2C GPIO defineation
+ * @brief ESP32-S3-MIXLY-ZERO V2.4 I2C GPIO defineation
  * 
  */
 #define FUNC_I2C_EN     (1)
 #define I2C_NUM         (0)
-#define I2C_CLK         (600000)
-#define GPIO_I2C_SCL    (GPIO_NUM_18)
-#define GPIO_I2C_SDA    (GPIO_NUM_17)
+#define I2C_CLK         (400000)
+#define GPIO_I2C_SCL    (GPIO_NUM_47)
+#define GPIO_I2C_SDA    (GPIO_NUM_48)
 
 /**
- * @brief ESP32-S3-KORVO-2-V3.0 SDMMC GPIO defination
+ * @brief ESP32-S3-MIXLY-ZERO V2.4 SDMMC GPIO defination
  * 
  * @note Only avaliable when PMOD connected
  */
 #define FUNC_SDMMC_EN   (1)
 #define SDMMC_BUS_WIDTH (1)
-#define GPIO_SDMMC_CLK  (GPIO_NUM_15)
-#define GPIO_SDMMC_CMD  (GPIO_NUM_7)
-#define GPIO_SDMMC_D0   (GPIO_NUM_4)
+#define GPIO_SDMMC_CLK  (GPIO_NUM_17)
+#define GPIO_SDMMC_CMD  (GPIO_NUM_16)
+#define GPIO_SDMMC_D0   (GPIO_NUM_15)
+
 #define GPIO_SDMMC_D1   (GPIO_NUM_NC)
 #define GPIO_SDMMC_D2   (GPIO_NUM_NC)
 #define GPIO_SDMMC_D3   (GPIO_NUM_NC)
 #define GPIO_SDMMC_DET  (GPIO_NUM_NC)
 
 /**
- * @brief ESP32-S3-KORVO-2-V3.0 SDSPI GPIO definationv
+ * @brief ESP32-S3-MIXLY-ZERO V2.4 SDSPI GPIO definationv
  * 
  */
 #define FUNC_SDSPI_EN       (0)
@@ -59,7 +60,7 @@
 #define GPIO_SDSPI_MOSI     (GPIO_NUM_NC)
 
 /**
- * @brief ESP32-S3-KORVO-2-V3.0 I2S GPIO defination
+ * @brief ESP32-S3-MIXLY-ZERO V2.4 I2S GPIO defination
  * 
  */
 #define FUNC_I2S_EN         (1)
@@ -69,17 +70,10 @@
 #define GPIO_I2S_SDIN       (GPIO_NUM_10)
 #define GPIO_I2S_DOUT       (GPIO_NUM_8)
 
-/**
- * @brief ESP32-S3-KORVO-2-V3.0 I2S GPIO defination
- * 
- */
-#define FUNC_I2S0_EN         (0)
-#define GPIO_I2S0_LRCK       (GPIO_NUM_NC)
-#define GPIO_I2S0_MCLK       (GPIO_NUM_NC)
-#define GPIO_I2S0_SCLK       (GPIO_NUM_NC)
-#define GPIO_I2S0_SDIN       (GPIO_NUM_NC)
-#define GPIO_I2S0_DOUT       (GPIO_NUM_NC)
+#define CODER_I2S_NUM       (I2S_NUM_1)
 
+#define GPIO_MUTE_NUM GPIO_NUM_1
+#define GPIO_MUTE_LEVEL 1
 #define RECORD_VOLUME   (30.0)
 /**
  * @brief player configurations
@@ -93,8 +87,8 @@
  * @note Some power control pins might not be listed yet
  * 
  */
-#define FUNC_PWR_CTRL       (1)
-#define GPIO_PWR_CTRL       (GPIO_NUM_48)
+#define FUNC_PWR_CTRL       (0)
+#define GPIO_PWR_CTRL       (GPIO_NUM_0)
 #define GPIO_PWR_ON_LEVEL   (1)
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)

@@ -36,8 +36,6 @@
 #include "driver/sdmmc_host.h"
 #endif /* ((SOC_SDMMC_HOST_SUPPORTED) && (FUNC_SDMMC_EN)) */
 
-#define GPIO_MUTE_NUM   GPIO_NUM_1
-#define GPIO_MUTE_LEVEL 1
 #define ACK_CHECK_EN   0x1     /*!< I2C master will check ack from slave*/
 #define ADC_I2S_CHANNEL 4
 static sdmmc_card_t *card;
@@ -85,7 +83,7 @@ esp_err_t bsp_codec_adc_init(int sample_rate)
 
     // Do initialize of related interface: data_if, ctrl_if and gpio_if
     audio_codec_i2s_cfg_t i2s_cfg = {
-        .port = I2S_NUM_1,
+        .port = CODER_I2S_NUM,
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
         .rx_handle = rx_handle,
         .tx_handle = NULL,
@@ -130,7 +128,7 @@ esp_err_t bsp_codec_dac_init(int sample_rate, int channel_format, int bits_per_c
 
     // Do initialize of related interface: data_if, ctrl_if and gpio_if
     audio_codec_i2s_cfg_t i2s_cfg = {
-        .port = I2S_NUM_1,
+        .port = CODER_I2S_NUM,
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
         .rx_handle = NULL,
         .tx_handle = tx_handle,
@@ -138,18 +136,17 @@ esp_err_t bsp_codec_dac_init(int sample_rate, int channel_format, int bits_per_c
     };
     play_data_if = audio_codec_new_i2s_data(&i2s_cfg);
 
-    audio_codec_i2c_cfg_t i2c_cfg = {.addr = ES8311_CODEC_DEFAULT_ADDR};
+    audio_codec_i2c_cfg_t i2c_cfg = {.addr = ES8374_CODEC_DEFAULT_ADDR};
     play_ctrl_if = audio_codec_new_i2c_ctrl(&i2c_cfg);
     play_gpio_if = audio_codec_new_gpio();
     // New output codec interface
-    es8311_codec_cfg_t es8311_cfg = {
+    es8374_codec_cfg_t es8374_cfg = {
         .codec_mode = ESP_CODEC_DEV_WORK_MODE_DAC,
         .ctrl_if = play_ctrl_if,
         .gpio_if = play_gpio_if,
-        .pa_pin = GPIO_PWR_CTRL,
-        .use_mclk = false,
+        // .pa_pin = GPIO_PWR_CTRL,
     };
-    play_codec_if = es8311_codec_new(&es8311_cfg);
+    play_codec_if = es8374_codec_new(&es8374_cfg);
     // New output codec device
     esp_codec_dev_cfg_t dev_cfg = {
         .codec_if = play_codec_if,
@@ -324,7 +321,7 @@ static esp_err_t bsp_i2s_deinit(i2s_port_t i2s_num)
     esp_err_t ret_val = ESP_OK;
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
-    if (i2s_num == I2S_NUM_1 && rx_handle) {
+    if (i2s_num == CODER_I2S_NUM && rx_handle) {
         ret_val |= i2s_channel_disable(rx_handle);
         ret_val |= i2s_del_channel(rx_handle);
         rx_handle = NULL;
@@ -449,20 +446,23 @@ esp_err_t bsp_board_init(uint32_t sample_rate, int channel_format, int bits_per_
     s_play_sample_rate = sample_rate;
 
     if (channel_format != 2 && channel_format != 1) {
-        ESP_LOGE(TAG, "Unable to configure channel_format");
         channel_format = 2;
+        ESP_LOGE(TAG, "Unable to configure channel_format(default set channel_format: %d)", channel_format);
     }
     s_play_channel_format = channel_format;
 
     if (bits_per_chan != 32 && bits_per_chan != 16) {
-        ESP_LOGE(TAG, "Unable to configure bits_per_chan");
         bits_per_chan = 32;
+        ESP_LOGE(TAG, "Unable to configure bits_per_chan(default set bits_per_chan: %d)", bits_per_chan);
     }
     s_bits_per_chan = bits_per_chan;
 
-    bsp_i2s_init(I2S_NUM_1, 16000, 2, 32);
+    // bsp_i2s_init(CODER_I2S_NUM, 16000, sample_rate, channel_format);
+    // bsp_codec_init(16000, 16000, sample_rate, channel_format);
     // Because record and play use the same i2s.
+    bsp_i2s_init(CODER_I2S_NUM, 16000, 2, 32);
     bsp_codec_init(16000, 16000, 2, 32);
+    
     /* Initialize PA */
     // gpio_config_t  io_conf;
     // memset(&io_conf, 0, sizeof(io_conf));
