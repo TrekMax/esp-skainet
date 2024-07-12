@@ -2,7 +2,7 @@ menu "Audio Media HAL"
 
 choice AUDIO_BOARD
     prompt "Audio hardware board"
-    default ESP32_S3_KORVO_1_V4_0_BOARD
+    default ESP32_S3_MIXLY_ZERO_BOARD
     help
         Select an audio board to use
 
@@ -23,6 +23,9 @@ config ESP32_S3_KORVO_2_V3_0_BOARD
     depends on IDF_TARGET_ESP32S3
 config ESP32_S3_EYE_BOARD
     bool "ESP32-S3-EYE"
+    depends on IDF_TARGET_ESP32S3
+config ESP32_S3_MIXLY_ZERO_BOARD
+    bool "ESP32-S3-Mixly-Zero"
     depends on IDF_TARGET_ESP32S3
 endchoice
 

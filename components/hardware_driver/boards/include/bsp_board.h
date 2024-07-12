@@ -45,6 +45,8 @@
     #include "esp32_s3_afe_raspberry_board.h"
 #elif CONFIG_ESP32_S3_BOX_3_BOARD
     #include "esp32_s3_box_3_board.h"
+#elif CONFIG_ESP32_S3_MIXLY_ZERO_BOARD
+    #include "esp32_s3_mixly_zero_board.h"
 #else 
     #error "Please select type of dev board"
 #endif

@@ -22,6 +22,10 @@ if(CONFIG_ESP32_S3_EYE_BOARD)
     list(APPEND BSP_BOARD_SRC "./boards/esp32s3-eye")
 endif()
 
+if(CONFIG_ESP32_S3_MIXLY_ZERO_BOARD)
+    list(APPEND BSP_BOARD_SRC "./boards/esp32s3-mixly-zero")
+endif()
+
 idf_component_register(
     SRC_DIRS
         ./
